@@ -1,6 +1,7 @@
-const { Schema, model } = require('mongoose');
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+import { Schema, model } from 'mongoose';
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+//const emailvalidator = require('email-validator')
 const userSchema = new Schema({
     fullName: {
         type: String,
@@ -16,15 +17,17 @@ const userSchema = new Schema({
         unique: true,
         lowercase: true,
         trim: true,
-        match: [
-            , "Please fill in a valid email address"
-        ]
+        //match: [emailvalidator.validate('email'), 'Please fill the valid email Id']
     },
     password: {
         type: String,
         required: [true, "Password is Required"],
         minLength: [8, "Password must be atleast 8 Characters"],
-        select: false
+        select: false,
+        match: [
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            'Please fill in a valid email address',
+        ], // Matches email against regex
     },
     role: {
         type: String,
@@ -47,7 +50,7 @@ const userSchema = new Schema({
     timestamps: true
 });
 userSchema.pre('save', async function (next) {
-    if (this.isModified('password')) {
+    if (!this.isModified('password')) {
         return next();
     }
     this.password = await bcrypt.hash(this.password, 10);
@@ -55,18 +58,21 @@ userSchema.pre('save', async function (next) {
 })
 
 userSchema.methods = {
-    comparePassword: async function (plaintext) {
-        return await bcrypt.compare(plaintext, this.password);
+    comparePassword: async function (plaintextpassword) {
+        return await bcrypt.compare(plaintextpassword, this.password);
     }
 
     ////////////////////////////////////////////////////////////////////////Here Continue 
     , generateJWTToken: function () {
         return jwt.sign({
-            id: this._id, role: this.role, email: this.email, subs
+            id: this._id, role: this.role, email: this.email, subscribtion: this.subscribtion,
+        },
+            process.env.JWT_SECERT, {
+            expiresIn: process.env.JWT_EXPIRY
         })
     }
 }
 
 
 const User = model('User', userSchema);
-module.exports = User;
+export default User;
