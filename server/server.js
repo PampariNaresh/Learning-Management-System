@@ -7,9 +7,9 @@ config()
 import cloudinary from 'cloudinary';
 
 cloudinary.v2.config({
-    cloud_name: 'djd60wdga',
-    api_key: '187113154332457',
-    api_secret: 'UZeAexNmv4FmonB7r3tOPicsPHE',
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
     secure: true,
 });
 
