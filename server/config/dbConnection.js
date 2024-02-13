@@ -4,7 +4,7 @@ const connectToDB = async () => {
     try {
         const { connection } = await mongoose.connect(process.env.MONGO_URL || `mongodb://localhost:27017/lms`);
         if (connection) {
-            console.log(`Connection to MongoDB:${process.env.MONGO_URL}`)
+            console.log(`Connection to MongoDB:${connection.host}`)
         }
     } catch (e) {
 

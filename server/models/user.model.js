@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import crypto from "crypto"
 //const emailvalidator = require('email-validator')
 const userSchema = new Schema({
     fullName: {
@@ -17,22 +18,22 @@ const userSchema = new Schema({
         unique: true,
         lowercase: true,
         trim: true,
-        //match: [emailvalidator.validate('email'), 'Please fill the valid email Id']
+        match: [
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            'Please fill in a valid email address',
+        ], // Matches email against regex
     },
     password: {
         type: String,
         required: [true, "Password is Required"],
         minLength: [8, "Password must be atleast 8 Characters"],
         select: false,
-        match: [
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            'Please fill in a valid email address',
-        ], // Matches email against regex
+
     },
     role: {
         type: String,
         enum: ['USER', 'ADMIN'],
-        default: 'USER'
+        default: 'USER',
     }
     ,
     avatar: {
@@ -63,13 +64,22 @@ userSchema.methods = {
     }
 
     ////////////////////////////////////////////////////////////////////////Here Continue 
-    , generateJWTToken: function () {
-        return jwt.sign({
-            id: this._id, role: this.role, email: this.email, subscribtion: this.subscribtion,
-        },
-            process.env.JWT_SECERT, {
+    , generateJWTToken: async function () {
+        return await jwt.sign(
+            {
+                id: this._id, role: this.role, subscription: this.subscription
+
+            },
+
+            process.env.JWT_SECRET, {
             expiresIn: process.env.JWT_EXPIRY
-        })
+        });
+    }
+    , generatePasswordToken: async function () {
+        const resetToken = crypto.randomBytes(20).toString('hex');
+        this.forgotPasswordToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+        this.forgotPasswordExpiry = Date.now() + 15 * 60 * 1000;
+        return resetToken;
     }
 }
 

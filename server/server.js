@@ -1,19 +1,21 @@
 import app from "./app.js";
-const PORT = process.env.PORT || 5000;
-import { config } from "dotenv";
-config()
 import connectDB from "./config/dbConnection.js";
+import { config } from "dotenv";
+const PORT = process.env.PORT || 5000;
+config()
 
-import { v2 } from 'cloudinary';
-v2.config(
-    {
-        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-        api_secret: process.env.CLOUDINARY_API_SECRET,
-        api_key: process.env.CLOUDINARY_API_KEY,
-    }
-)
+import cloudinary from 'cloudinary';
+
+cloudinary.v2.config({
+    cloud_name: 'djd60wdga',
+    api_key: '187113154332457',
+    api_secret: 'UZeAexNmv4FmonB7r3tOPicsPHE',
+    secure: true,
+});
+
 
 app.listen(PORT, async () => {
     await connectDB();
     console.log(`App is Running at http://localhost:${PORT}`);
 })
+
