@@ -71,6 +71,8 @@ function HomeLayout({ children }) {
                         )
 
                         }
+
+
                         <li>
                             <Link to="/about"> About us </Link>
                         </li>
