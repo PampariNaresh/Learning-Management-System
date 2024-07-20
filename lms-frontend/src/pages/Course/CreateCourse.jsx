@@ -68,7 +68,7 @@ function CreateCourse() {
 
     return (
         <HomeLayout>
-            <div className="h-[100vh] flex itmes-center justify-center">
+            <div className="h-[90vh] flex itmes-center justify-center">
 
                 <form
                     onSubmit={onFormSubmit}
@@ -81,7 +81,7 @@ function CreateCourse() {
                         Create new course
                     </h1>
 
-                    <main className="grid grid-cols-2 gap-x-10">
+                    <main className="grid grid-cols-2 gap-x-10 w-[90vh]">
                         {/* left */}
                         <div className="gap-y-6">
                             <div>

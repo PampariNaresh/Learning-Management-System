@@ -15,6 +15,7 @@ import Home from './pages/Home'
 import NotFound from './pages/NotFound'
 import SignIn from  "./pages/SignIn"
 import SignUp  from './pages/SignUp'
+import Profile from './pages/User/Profile'
 function App() {
 
 useEffect(()=>{
@@ -31,6 +32,9 @@ useEffect(()=>{
        <Route path='/courses' element={<CourseList />} />
       <Route path='/course/description' element={<CourseDescription />} />
 
+      <Route element={<RequireAuth allowedRoles={["ADMIN","USER"]}/>}>
+        <Route path="/user/profile" element ={<Profile/>}/>
+      </Route>
       <Route element={<RequireAuth allowedRoles={["ADMIN"]}/>}>
         <Route path="/course/create" element ={<CreateCourse/>}/>
       </Route>
