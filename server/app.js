@@ -9,12 +9,24 @@ import courseRoutes from "./routes/course.routes.js"
 import paymentRoutes from "./routes/payment.routes.js"
 const app = express();
 
-
 app.use(express.json());
-app.use(cors({
-    origin: [process.env.FRONTEND_URL],
-    creditionals: true
-}))
+app.use(express.urlencoded({ extended: true }));
+const corsOptions = {
+    origin: 'http://localhost:5173', // specify the allowed origin
+    methods: 'GET,POST,PUT,DELETE', // allowed HTTP methods
+    // allowedHeaders: 'Content-Type,Authorization',
+    credentials: true, // allowed headers
+};
+
+app.use(cors(corsOptions));
+
+// app.use(
+//     cors({
+//         origin: [process.env.FRONTEND_URL],
+//         credentials: true,
+//     })
+// );
+
 app.use(cookieParser());
 app.use(morgan("dev"));
 

@@ -80,9 +80,15 @@ function Signin() {
                             placeholder="enter your Password..."
                             id="password" />
                     </div>
+                     <Link to={"/forgetpassword"}>
+            <p className="text-center link text-accent cursor-pointer">
+              Forget Password
+            </p>
+          </Link>
                     <button className="mt-2 bg-yellow-800 hover:bg-yellow-500 transition-all ease-in-out duration-300 cursor-pointer py-2 font-semibold text-lg">
                         Sign In
                     </button>
+                    
                     <p className="text-center">
                             Donot have an account ? <Link to="/signup" className="cusror-pointer text-accent">Login</Link>
                     </p>

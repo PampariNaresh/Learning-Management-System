@@ -13,8 +13,12 @@ import CourseList from "./pages/Course/CourseList"
 import CreateCourse from './pages/Course/CreateCourse'
 import Home from './pages/Home'
 import NotFound from './pages/NotFound'
+import ChangePassword from './pages/Password/ChangePassword'
+import ForgetPassword from './pages/Password/ForgetPassword'
+import ResetPassword from './pages/Password/ResetPassword'
 import SignIn from  "./pages/SignIn"
 import SignUp  from './pages/SignUp'
+import EditProfile from './pages/User/EditProfile'
 import Profile from './pages/User/Profile'
 function App() {
 
@@ -28,12 +32,16 @@ useEffect(()=>{
         <Route path='/' element={<Home/>}/>
         <Route path='/about' element={<AboutUs/>}/>
         <Route path='/signup' element={<SignUp/>}/>
+        <Route path="/changepassword" element={<ChangePassword />} />
         <Route path='/signin' element={<SignIn/>}/>
+        <Route path="/forgetpassword" element={<ForgetPassword />} />
+        <Route path="/reset-password/:resetToken" element={<ResetPassword />} />
        <Route path='/courses' element={<CourseList />} />
       <Route path='/course/description' element={<CourseDescription />} />
 
       <Route element={<RequireAuth allowedRoles={["ADMIN","USER"]}/>}>
         <Route path="/user/profile" element ={<Profile/>}/>
+        <Route path="/user/editprofile" element ={<EditProfile/>}/>
       </Route>
       <Route element={<RequireAuth allowedRoles={["ADMIN"]}/>}>
         <Route path="/course/create" element ={<CreateCourse/>}/>

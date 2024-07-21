@@ -70,12 +70,12 @@ export const logout = createAsyncThunk("/auth/logout", async () => {
 
 
 // function to fetch user data
-export const getUserData = createAsyncThunk("/user/details", async () => {
+export const getUserData = createAsyncThunk("/auth/getData", async () => {
     try {
         const res = await axiosInstance.get("/user/me");
-        return res?.data;
+        return res;
     } catch (error) {
-        toast.error(error.message);
+        toast.error(error?.message);
     }
 });
 
@@ -128,27 +128,21 @@ export const forgetPassword = createAsyncThunk(
 );
 
 // function to update user profile
-export const updateProfile = createAsyncThunk(
-    "/user/update/profile",
-    async (data) => {
-        try {
-            let res = axiosInstance.put(`/user/update/${data[0]}`, data[1]);
-
-            toast.promise(res, {
-                loading: "Updating...",
-                success: (data) => {
-                    return data?.data?.message;
-                },
-                error: "Failed to update profile",
-            });
-            // getting response resolved here
-            res = await res;
-            return res.data;
-        } catch (error) {
-            toast.error(error?.response?.data?.message);
-        }
+export const updateProfile = createAsyncThunk("/user/updateProfile", async (data) => {
+    try {
+        const res = axiosInstance.put(`user/update/${data[0]}`, data[1]);
+        toast.promise(res, {
+            loading: "Wait! profile update in progress...",
+            success: (data) => {
+                return data?.data?.message;
+            },
+            error: "Failed to update profile"
+        });
+        return (await res).data;
+    } catch (error) {
+        toast.error(error?.response?.data?.message);
     }
-);
+})
 
 // function to reset the password
 export const resetPassword = createAsyncThunk("/user/reset", async (data) => {
@@ -195,13 +189,26 @@ const authSlice = createSlice({
                 state.role = ""
                 state.data = {};
             })
-            // for user details
+            // .addCase(updateProfile.fulfilled, (state, action) => {
+            //     console.log(action.payload)
+            //     if (action?.payload?.data) {
+            //         state.data.user.avatar = action?.payload?.data?.user?.avatar;
+            //         state.data.user.avatar.secure_url = action?.payload?.data?.user?.avatar?.secure_url;
+            //         state.data.user.avatar.public_url = action?.payload?.data?.user?.avatar?.public_url;
+            //         state.data.user.fullName = action?.payload?.data?.user?.fullName;
+            //     }
+            // })
+
             .addCase(getUserData.fulfilled, (state, action) => {
-                localStorage.setItem("data", JSON.stringify(action?.payload?.user));
+                console.log(action.payload)
+                if (!action?.payload?.data) return;
+
+                localStorage.setItem("data", JSON.stringify(action?.payload?.data));
                 localStorage.setItem("isLoggedIn", true);
+                localStorage.setItem("role", action?.payload?.data?.user?.role);
                 state.isLoggedIn = true;
-                state.data = action?.payload?.user;
-                state.role = action?.payload?.user?.role;
+                state.data = action?.payload?.data;
+                state.role = action?.payload?.data?.user?.role;
             });
     },
 });

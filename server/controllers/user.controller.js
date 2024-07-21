@@ -37,9 +37,8 @@ const register = async (req, res, next) => {
         email,
         password,
         avatar: {
-            public_id: email,
-            secure_url: 'https://res.cloudinary.com/du9jzqlpt/image/upload/v1674647316/avatar_drzgxv.jpg',
-
+            public_id: "Dummy",
+            secure_url: "Dummy"
         },
     });
 
@@ -53,6 +52,7 @@ const register = async (req, res, next) => {
     // Run only if user sends a file
     if (req.file) {
         try {
+            console.log(req.file);
             const result = await cloudinary.v2.uploader.upload(req.file.path, {
                 folder: 'lms', // Save files in a folder named lms
                 width: 250,
@@ -60,7 +60,11 @@ const register = async (req, res, next) => {
                 gravity: 'faces', // This option tells cloudinary to center the image around detected faces (if any) after cropping or resizing the original image
                 crop: 'fill',
             });
-
+            console.log(result);
+            if (!result || !result.secure_url) {
+                console.log('Failed to upload image to Cloudinary');
+                throw new Error('Failed to upload image to Cloudinary');
+            }
             // If success
             if (result) {
                 // Set the public_id and secure_url in DB
@@ -72,7 +76,7 @@ const register = async (req, res, next) => {
             }
         } catch (error) {
             return next(
-                new AppError(error || 'File not uploaded, please try again', 400)
+                new AppError(error || 'File not uploaded, please try again', 500)
             );
         }
     }
@@ -124,7 +128,7 @@ const login = async (req, res, next) => {
     res.status(200).json({
         success: true,
         message: 'User logged in successfully',
-        user,
+        user
     });
 };
 
@@ -138,7 +142,9 @@ const logout = (_req, res, _next) => {
     res.status(200).json({
         success: true,
         message: "User logged out Successfully",
+
     });
+
 
 }
 const getProfile = async (req, res, _next) => {
@@ -275,7 +281,8 @@ const changePassword = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
 
     const { fullName } = req.body;
-    const { id } = req.user;
+    const { id } = req.params;
+    console.log(id);
     const user = await User.findById(id);
     if (!user) {
         return next(new ArrError("User does not exit", 400));
@@ -316,7 +323,8 @@ const updateUser = async (req, res, next) => {
     await user.save();
     res.status(200).json({
         success: true,
-        message: "User details updated successfully"
+        message: "User details updated successfully",
+        user
     })
 
 
