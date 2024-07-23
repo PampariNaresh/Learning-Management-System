@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "react-hot-toast";
-import { useDispatch ,useNavigate} from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import {isEmail} from "../../../helpers/regexMatcher"
@@ -9,7 +9,7 @@ import { forgetPassword } from "../../redux/Slices/authSlice";
 
 const ForgetPassword = () => {
   const dispatch = useDispatch();
-//  const navigate = useNavigate();
+ //const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
 
@@ -35,6 +35,7 @@ const ForgetPassword = () => {
     // clearing the input fields
     console.log(res);
     setEmail("");
+    
    
   };
 
@@ -76,7 +77,7 @@ const ForgetPassword = () => {
 
           <p className="text-center">
             Already have an account ?{" "}
-            <Link to={"/login"} className="link text-accent cursor-pointer">
+            <Link to={"/signin"} className="link text-accent cursor-pointer">
               Login
             </Link>
           </p>

@@ -53,7 +53,7 @@ const ResetPassword = () => {
 
     // redirecting to the login page
     if (res.payload.success) {
-      navigate("/login");
+      navigate("/signin");
     }
   };
 
