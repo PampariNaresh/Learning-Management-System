@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const corsOptions = {
-    origin: process.env.FRONTEND_URL, // specify the allowed origin
+    origin: ["https://learning-management-system-frontend-rho.vercel.app"], // specify the allowed origin
     methods: 'GET,POST,PUT,DELETE', // allowed HTTP methods
     // allowedHeaders: 'Content-Type,Authorization',
     credentials: true, // allowed headers
