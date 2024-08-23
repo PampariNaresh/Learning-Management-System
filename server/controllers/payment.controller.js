@@ -2,7 +2,7 @@ import crypto from 'crypto';
 
 
 import User from '../models/user.model.js';
-import AppError from '../utils/AppError.js';
+import AppError from '../utils/appError.js';
 import { razorpay } from '../server.js';
 import Payment from '../models/payment.model.js';
 
@@ -89,7 +89,6 @@ export const verifySubscription = async (req, res, next) => {
     });
 };
 
-
 export const cancelSubscription = async (req, res, next) => {
     const { id } = req.user;
 
@@ -119,7 +118,7 @@ export const cancelSubscription = async (req, res, next) => {
         await user.save();
     } catch (error) {
         // Returning error if any, and this error is from razorpay so we have statusCode and message built in
-        return next(new AppError(error.error.description, error.statusCode));
+        return next(new AppError(error.message, error.statusCode));
     }
 
     // Finding the payment using the subscription ID
@@ -152,14 +151,14 @@ export const cancelSubscription = async (req, res, next) => {
     user.subscription.status = undefined; // Change the subscription Status in user DB
 
     await user.save();
-    await payment.remove();
+    await payment.deleteOne();
 
     // Send the response
     res.status(200).json({
         success: true,
         message: 'Subscription canceled successfully',
     });
-};
+}
 
 
 export const getRazorpayApiKey = async (_req, res, _next) => {

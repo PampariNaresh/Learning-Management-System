@@ -5,8 +5,8 @@ import axiosInstance from "../../config/axiosinstance";
 
 const initialState = {
     isLoggedIn: localStorage.getItem("isLoggedIn") || false,
-    role: localStorage.getItem("role") || "",
-    data: JSON.parse(localStorage.getItem("data")) || {},
+    role: localStorage.getItem("role") == undefined ? "" : localStorage.getItem("role"),
+    data: JSON.parse(localStorage.getItem("data")) == undefined ? {} : JSON.parse(localStorage.getItem("data")),
 }
 
 // function to handle signup

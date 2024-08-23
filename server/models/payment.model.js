@@ -10,6 +10,7 @@ const paymentSchema = new Schema(
             type: String,
             required: true,
         },
+
         razorpay_signature: {
             type: String,
             required: true,
