@@ -12,7 +12,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const corsOptions = {
-    origin: "https://learning-management-system-frontend-5p470uxl0.vercel.app", // specify the allowed origin
+    origin: "https://learning-management-system-frontend-nevtryvij.vercel.app", // specify the allowed origin
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // allowed HTTP methods
     credentials: true,
 
