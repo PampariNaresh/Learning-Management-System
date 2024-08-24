@@ -28,7 +28,7 @@ app.use(cors(corsOptions));
 // );
 
 app.use(cookieParser());
-app.use(morgan("dev"));
+//app.use(morgan("dev"));
 
 
 app.use('/ping', (req, res) => {
