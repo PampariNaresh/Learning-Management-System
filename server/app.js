@@ -18,13 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // };
 const corsOptions = {
-    origin: (origin, callback) => {
-        if (origin) {
-            callback(null, origin); // Reflect the request origin in the 'Access-Control-Allow-Origin' header
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: "https://learning-management-system-frontend-rho.vercel.app",
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // allowed HTTP methods
     credentials: true, // Allow credentials (cookies, headers, etc.)
 };
