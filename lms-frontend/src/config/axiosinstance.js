@@ -6,7 +6,7 @@ import axios from "axios";
 //     'Content-Type': 'application/json',
 //   },
 const axiosInstance = axios.create({
-    baseURL: 'http://localhost:5000/api/v1',
+    baseURL: 'https://vercel.com/pampari-nareshs-projects/learning-management-system/api/v1',
     // headers: {
     //     'Content-Type': 'multipart/form-data', // for handling form data including files
     // },
