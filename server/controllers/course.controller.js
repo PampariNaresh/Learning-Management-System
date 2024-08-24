@@ -60,7 +60,7 @@ export const createCourse = async (req, res, next) => {
                 course.thumbnail.public_id = result.public_id;
                 course.thumbnail.secure_url = result.secure_url;
             }
-            fs.rm(`uploads/${req.file.filename}`);
+            fs.rm(`/tmp/${req.file.filename}`);
 
         }
         await course.save();
@@ -148,7 +148,7 @@ export const addLectureToCourseById = async (req, res, next) => {
             }
 
             // After successful upload remove the file from local storage
-            fs.rm(`uploads/${req.file.filename}`);
+            fs.rm(`/tmp/${req.file.filename}`);
         } catch (error) {
             // Empty the uploads directory without deleting the uploads directory
             for (const file of await fs.readdir('uploads/')) {
